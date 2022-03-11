@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'category/normal_screen_view.dart';
-import 'category/smaller_screen_view.dart';
+import 'normal_screen_view.dart';
+import 'smaller_screen_view.dart';
 
 class CategoryView extends StatelessWidget {
   const CategoryView({Key? key}) : super(key: key);
