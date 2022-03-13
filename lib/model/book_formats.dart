@@ -52,7 +52,7 @@ class BookFormats {
         applicationEpubZip: json["application/epub+zip"],
         textHtmlCharsetUtf8: json["text/html; charset=utf-8"],
         textPlainCharsetIso88591: json["text/plain; charset=iso-8859-1"],
-        imageJpeg: json["image/jpeg"],
+        imageJpeg: json["image/jpeg"] ?? 'https://via.placeholder.com/170',
         textPlain: json["text/plain"],
         textHtmlCharsetUsAscii: json["text/html; charset=us-ascii"],
         textHtml: json["text/html"],

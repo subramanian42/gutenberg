@@ -48,6 +48,7 @@ class _SearchscreenState extends State<Searchscreen> {
   @override
   void dispose() {
     searchBoxController.dispose();
+    gridScrollController.dispose();
     super.dispose();
   }
 
@@ -123,6 +124,14 @@ class _SearchscreenState extends State<Searchscreen> {
                   ),
                   Consumer<SearchViewModel>(
                     builder: ((context, value, child) {
+                      if (value.currentState == status.error) {
+                        return Center(
+                          child: Text(
+                            value.error!,
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        );
+                      }
                       if (value.currentState == status.loadData) {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -145,6 +154,8 @@ class _SearchscreenState extends State<Searchscreen> {
                               width: constraints.maxWidth,
                               height: constraints.maxHeight - 160,
                               child: GridView.builder(
+                                key: const PageStorageKey<String>(
+                                    'gridLocation'),
                                 controller: gridScrollController,
                                 itemCount: value.bookList!.length,
                                 gridDelegate:
@@ -165,7 +176,7 @@ class _SearchscreenState extends State<Searchscreen> {
 
                                   return BookCard(
                                     author: authorName,
-                                    title: book.title,
+                                    title: book.title!,
                                     imageUrl: book.formats!.imageJpeg,
                                     formats: book.formats!,
                                   );

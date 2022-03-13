@@ -10,12 +10,12 @@ enum status { loadData, error, initial, fetched, noMoreData }
 class SearchViewModel extends ChangeNotifier {
   List<Book>? _bookListModel;
   final String _genre;
+  bool _inits = true;
   String? _error;
   String? _errorCode;
-
   status _currentState = status.initial;
   int _page = 1;
-  int _totalPages = 0;
+  int _totalPages = 1;
   int get page => _page;
 
   List<Book>? get bookList => _bookListModel;
@@ -33,25 +33,32 @@ class SearchViewModel extends ChangeNotifier {
   }
   void setError(Object error, {int? code}) {
     _error = error.toString();
+    notifyListeners();
   }
 
   void getBooks(String genre, {String? searchquery}) async {
     _currentState = status.loadData;
     notifyListeners();
 
-    var result =
-        await BookService.getBooks(genre, _page, searchQuery: searchquery);
+    var result = await BookService.getBooksByGenre(genre, _page,
+        searchQuery: searchquery);
 
-    if (_currentState != status.initial && _totalPages == _page) {
+    if (!_inits && _totalPages == _page) {
       _currentState = status.noMoreData;
       notifyListeners();
     }
     if (result is Success) {
+      _inits = false;
       _totalPages = ((result.response as BookListFromJson).count / 32).ceil();
-      _bookListModel!.addAll((result.response as BookListFromJson).books!);
+      if (_bookListModel == null) {
+        _bookListModel = ((result.response as BookListFromJson).books!);
+      } else {
+        _bookListModel!.addAll((result.response as BookListFromJson).books!);
+      }
       _page += 1;
     }
     if (result is Failure) {
+      _currentState = status.error;
       setError(result.errorResponse, code: result.code);
     }
 

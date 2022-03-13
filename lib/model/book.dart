@@ -24,7 +24,7 @@ class Book {
 
   MediaType? mediaType;
   List<String>? subjects;
-  String title;
+  String? title;
 
   factory Book.fromRawJson(String str) => Book.fromJson(json.decode(str));
 

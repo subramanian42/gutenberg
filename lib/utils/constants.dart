@@ -1,7 +1,3 @@
-const booksUrl = 'http://skunkworks.ignitesol.com:8000/books';
-const booksGenreUrl =
-    'http://skunkworks.ignitesol.com:8000/books?mime_type=image&topic=';
-
 class Genre {
   String svgAsset;
   String genre;

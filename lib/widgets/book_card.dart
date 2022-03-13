@@ -44,11 +44,11 @@ class BookCard extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          Expanded(
-            flex: 2,
+          SizedBox(
+            height: 35,
+            width: 114,
             child: Text(
-              title.toUpperCase(), //width: 114,
-              //height: 35,
+              title.toUpperCase(),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyText2,
@@ -57,12 +57,11 @@ class BookCard extends StatelessWidget {
           // const SizedBox(
           //   height: 5,
           // ),
-          Expanded(
-            flex: 1,
+          SizedBox(
+            height: 20,
+            width: 114,
             child: Text(
-              author.replaceAll(',', ''), // width: 110,
-              // height: 20,
-              maxLines: 1,
+              author.replaceAll(',', ''),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle2,
             ),
