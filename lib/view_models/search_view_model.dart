@@ -5,7 +5,7 @@ import 'package:gutenberg/repo/book_service.dart';
 
 import '../model/book.dart';
 
-enum status { loadData, error, initial, fetched, noMoreData }
+enum status { loadData, error, initial, fetched, noMoreData, loadMoreData }
 
 class SearchViewModel extends ChangeNotifier {
   List<Book>? _bookListModel;
@@ -37,7 +37,7 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   void getBooks(String genre, {String? searchquery}) async {
-    _currentState = status.loadData;
+    _currentState = _inits ? status.loadData : status.loadMoreData;
     notifyListeners();
 
     var result = await BookService.getBooksByGenre(genre, _page,
