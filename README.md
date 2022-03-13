@@ -4,7 +4,7 @@ Uses gutendex api to fetch and display books
 
 
 
-#Sample Images :
+#Sample Videos and Images:
 
 
 
