@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchBox extends StatefulWidget {
-  const SearchBox({Key? key}) : super(key: key);
-
+  const SearchBox({required this.searchBoxController, this.onPressed, Key? key})
+      : super(key: key);
+  final void Function()? onPressed;
+  final TextEditingController searchBoxController;
   @override
   State<SearchBox> createState() => _SearchBoxState();
 }
 
 class _SearchBoxState extends State<SearchBox> {
-  TextEditingController _searchBoxController = TextEditingController();
   bool isCollapsed = true;
 
   @override
   void initState() {
-    _searchBoxController.addListener(() {
+    widget.searchBoxController.addListener(() {
       setState(() {});
     });
 
@@ -22,17 +23,11 @@ class _SearchBoxState extends State<SearchBox> {
   }
 
   @override
-  void dispose() {
-    _searchBoxController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         height: 40,
-        width: constraints.maxWidth - 60,
+        width: constraints.maxWidth - 40,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onSecondary,
           borderRadius: BorderRadius.circular(4),
@@ -44,14 +39,13 @@ class _SearchBoxState extends State<SearchBox> {
           },
           child: TextField(
             style: Theme.of(context).textTheme.bodyText1,
-            controller: _searchBoxController,
+            controller: widget.searchBoxController,
             cursorHeight: 20,
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.left,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               isCollapsed: isCollapsed,
               labelText: 'Search',
-              floatingLabelAlignment: FloatingLabelAlignment.center,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               labelStyle: Theme.of(context).textTheme.subtitle1,
               enabledBorder: InputBorder.none,
@@ -63,16 +57,15 @@ class _SearchBoxState extends State<SearchBox> {
                 right: 10,
               ),
               prefixIcon: IconButton(
-                onPressed: () {},
+                onPressed: widget.onPressed,
                 icon: SvgPicture.asset(
                   'assets/icons/Search.svg',
-                  width: 15,
                 ),
               ),
-              suffixIcon: _searchBoxController.text.isNotEmpty
+              suffixIcon: widget.searchBoxController.text.isNotEmpty
                   ? IconButton(
                       onPressed: () {
-                        _searchBoxController.clear();
+                        widget.searchBoxController.clear();
                       },
                       icon: SvgPicture.asset('assets/icons/Cancel.svg'),
                     )

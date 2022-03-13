@@ -4,6 +4,7 @@ class CustomTextStyle {
   static const Color _primaryColor = Color(0xff5E56E7);
   static const Color _tertiaryColor = Color(0xffA0A0A0);
   static const Color _onTertiaryColor = Color(0xff333333);
+  static const Color _labelColor = Color(0xffe1563e);
 
   static const TextTheme textTheme = TextTheme(
     headline1: heading1TextStyle,
@@ -13,6 +14,8 @@ class CustomTextStyle {
     bodyText2: body2TextStyle,
     subtitle1: subtitle1TextStyle,
     subtitle2: subtitle2TextStyle,
+    labelMedium: labelMediumTextStyle,
+    button: buttonTextStyle,
   );
   static const TextStyle heading1TextStyle = TextStyle(
       // heading 1
@@ -57,5 +60,17 @@ class CustomTextStyle {
       fontSize: 12,
       fontWeight: FontWeight.normal,
       color: _tertiaryColor,
+      fontFamily: "montserat");
+  static const TextStyle labelMediumTextStyle = TextStyle(
+      //error text
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: _labelColor,
+      fontFamily: "montserat");
+  static const TextStyle buttonTextStyle = TextStyle(
+      // button color
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: _primaryColor,
       fontFamily: "montserat");
 }

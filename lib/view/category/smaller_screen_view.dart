@@ -62,42 +62,7 @@ annotations, and reviews.''',
                         width: constraints.maxWidth,
                         height: 750 * (2 / 3),
                         child: const GenreCardView(),
-                      )
-                      // child: SizedBox(
-                      //   width: constraints.maxWidth,
-                      //   height: 750 * (2 / 3),
-                      //   child: Column(
-                      //     children: const [
-                      //       GenreCard(
-                      //         svgAsset: 'assets/icons/Fiction.svg',
-                      //         genre: 'fiction',
-                      //       ),
-                      //       GenreCard(
-                      //         svgAsset: 'assets/icons/Drama.svg',
-                      //         genre: 'drama',
-                      //       ),
-                      //       GenreCard(
-                      //         svgAsset: 'assets/icons/Humour.svg',
-                      //         genre: 'humour',
-                      //       ),
-                      //       GenreCard(
-                      //         svgAsset: 'assets/icons/Politics.svg',
-                      //         genre: 'politics',
-                      //       ),
-                      //       GenreCard(
-                      //           svgAsset: 'assets/icons/Philosophy.svg',
-                      //           genre: 'philosophy'),
-                      //       GenreCard(
-                      //           svgAsset: 'assets/icons/History.svg',
-                      //           genre: 'history'),
-                      //       GenreCard(
-                      //           svgAsset: 'assets/icons/Adventure.svg',
-                      //           genre: 'adventure'),
-                      //     ],
-                      //   ),
-                      // ),
-
-                      ),
+                      )),
                 ],
               ),
             ),

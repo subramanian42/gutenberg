@@ -41,7 +41,9 @@ class NormalScreenView extends StatelessWidget {
                 top: 200,
                 left: 20,
                 child: SizedBox(
-                  width: constraints.maxWidth / 1.5,
+                  width: constraints.maxWidth >= 500
+                      ? constraints.maxWidth / 1.5
+                      : constraints.maxWidth / 1.25,
                   height: 90,
                   child: Text(
                     'A social cataloging website that allows you to freely search its database of books, annotations, and reviews.',
@@ -54,7 +56,7 @@ class NormalScreenView extends StatelessWidget {
                 top: 300,
                 child: SizedBox(
                     width: constraints.maxWidth,
-                    height: constraints.maxHeight * (2 / 3),
+                    height: constraints.maxHeight, //* (2 / 3),
                     child: const GenreCardView()),
               ),
             ],
