@@ -15,17 +15,21 @@ class SearchViewModel extends ChangeNotifier {
   String? _errorCode;
   String? _nextResult;
   status _currentState = status.initial;
+  int _page = 1;
+  int get page => _page;
+
   bool get loading => _loading;
   List<Book>? get bookList => _bookListModel;
   String? get error => _error;
   String? get errorCode => _errorCode;
   String? get nextResult => _nextResult;
   status get currentState => _currentState;
-  void setStatus(status newstate) {
+  set setStatus(status newstate) {
     _currentState = newstate;
+    notifyListeners();
   }
 
-  void setLoading(bool state) async {
+  void setLoading(bool state) {
     _loading = state;
     notifyListeners();
   }
@@ -37,10 +41,10 @@ class SearchViewModel extends ChangeNotifier {
     _error = error.toString();
   }
 
-  void getBooks(String genre) async {
+  void getBooks(String genre, {int page = 1}) async {
     setLoading(true);
 
-    var result = await BookService.getBooksByGenre(genre);
+    var result = await BookService.getBooksByGenre(genre, page: page);
 
     if (result is Success) {
       _nextResult = (result.response as BookListFromJson).next;
@@ -53,26 +57,10 @@ class SearchViewModel extends ChangeNotifier {
     setLoading(false);
   }
 
-  void nextBooks(String? url) async {
+  void searchBooks(String genre, String searchquery, {int page = 1}) async {
     setLoading(true);
-    if (url != null) {
-      var result = await BookService.getBooksByUrl(url);
-      if (result is Success) {
-        _nextResult = (result.response as BookListFromJson).next;
-        _bookListModel!.addAll((result.response as BookListFromJson).books!);
-      }
-      if (result is Failure) {
-        setError(result.errorResponse, code: result.code);
-      }
-    }
-
-    setLoading(false);
-    setStatus(status.fetched);
-  }
-
-  void searchBooks(String genre, String searchquery) async {
-    setLoading(true);
-    Object result = await BookService.searchBooks(genre, searchquery);
+    Object result =
+        await BookService.searchBooks(genre, searchquery, page: page);
 
     if (result is Success) {
       _nextResult = (result.response as BookListFromJson).next;
