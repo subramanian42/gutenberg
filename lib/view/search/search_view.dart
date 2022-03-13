@@ -29,16 +29,20 @@ class Searchscreen extends StatefulWidget {
 class _SearchscreenState extends State<Searchscreen> {
   final searchBoxController = TextEditingController();
   final gridScrollController = ScrollController();
+
+  void _scrollListener() {
+    if (gridScrollController.position.pixels ==
+        gridScrollController.position.maxScrollExtent) {
+      context.read<SearchViewModel>().getBooks(widget.title);
+    }
+  }
+
+  void fetchData() {}
+
   @override
   void initState() {
     super.initState();
-    gridScrollController.addListener(() {
-      if (gridScrollController.position.maxScrollExtent -
-              gridScrollController.position.pixels <=
-          10) {
-        context.read<SearchViewModel>().setStatus(status.loadData);
-      }
-    });
+    gridScrollController.addListener(_scrollListener);
   }
 
   @override
@@ -103,9 +107,9 @@ class _SearchscreenState extends State<Searchscreen> {
                           searchBoxController: searchBoxController,
                           onPressed: () {
                             if (searchBoxController.value.text.isNotEmpty) {
-                              searchViewModel.searchBooks(
+                              searchViewModel.getBooks(
                                 widget.title,
-                                searchBoxController.value.text,
+                                searchquery: searchBoxController.value.text,
                               );
                             } else {
                               searchViewModel.getBooks(
@@ -120,14 +124,12 @@ class _SearchscreenState extends State<Searchscreen> {
                   Consumer<SearchViewModel>(
                     builder: ((context, value, child) {
                       if (value.currentState == status.loadData) {
-                        value.nextBooks(value.nextResult);
-                      }
-                      if (value.loading) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-                      if (value.bookList != null) {
+                      if (value.currentState == status.fetched &&
+                          value.bookList != null) {
                         if (value.bookList!.isEmpty) {
                           return Center(
                             child: Text(
@@ -135,40 +137,43 @@ class _SearchscreenState extends State<Searchscreen> {
                               style: Theme.of(context).textTheme.headline2,
                             ),
                           );
-                        }
-                        return Positioned(
-                          top: 150,
-                          left: 10,
-                          child: SizedBox(
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
-                            child: GridView.builder(
-                              controller: gridScrollController,
-                              itemCount: value.bookList!.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisExtent: 235,
-                              ),
-                              itemBuilder: (context, index) {
-                                var book = value.bookList![index];
-                                int len = book.authors!.length;
-                                String authorName = '';
-                                for (int i = len - 1; i >= 0; i--) {
-                                  authorName =
-                                      authorName + book.authors![i].name;
-                                }
+                        } else {
+                          return Positioned(
+                            top: 150,
+                            left: 10,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight - 160,
+                              child: GridView.builder(
+                                controller: gridScrollController,
+                                itemCount: value.bookList!.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: constraints.maxWidth > 500
+                                      ? (constraints.maxWidth / 200).ceil()
+                                      : 3,
+                                  mainAxisExtent: 235,
+                                ),
+                                itemBuilder: (context, index) {
+                                  var book = value.bookList![index];
+                                  int len = book.authors!.length;
+                                  String authorName = '';
+                                  for (int i = len - 1; i >= 0; i--) {
+                                    authorName =
+                                        authorName + book.authors![i].name;
+                                  }
 
-                                return BookCard(
-                                  author: authorName,
-                                  title: book.title,
-                                  imageUrl: book.formats!.imageJpeg,
-                                  formats: book.formats!,
-                                );
-                              },
+                                  return BookCard(
+                                    author: authorName,
+                                    title: book.title,
+                                    imageUrl: book.formats!.imageJpeg,
+                                    formats: book.formats!,
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         return Center(
                           child: TextButton(

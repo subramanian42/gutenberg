@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gutenberg/utils/theme/theme.dart';
 import 'package:gutenberg/view/category/category_view.dart';
 
-import 'package:gutenberg/view/search/search_view.dart';
-
 void main() {
   runApp(
     const Gutenberg(),
